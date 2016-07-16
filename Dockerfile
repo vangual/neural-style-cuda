@@ -1,15 +1,21 @@
-FROM nvidia/cuda:7.0-cudnn4-devel
+FROM nvidia/cuda:7.5-cudnn5-devel
 MAINTAINER xplo <xplo@xplo.org>
 
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
+ENV DEBCONF_NONINTERACTIVE_SEEN true
 
 # Prepare ubuntu prereqs
 RUN apt-get update && \
-  apt-get install -y software-properties-common curl git wget && \
+  apt-get upgrade -y && \
+  apt-get install -y \
+    software-properties-common \
+    curl \
+    wget \
+    vim nano \ 
+    libprotobuf-dev protobuf-compiler && \
   cd ~/ && \
   curl -s https://raw.githubusercontent.com/torch/ezinstall/master/install-deps | bash && \
-  apt-get install -y libprotobuf-dev protobuf-compiler && \ 
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
